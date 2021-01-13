@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package transaction;
+
+message HealthCheckRequest { string service = 1; }
+
+message HealthCheckResponse { string status = 1; }
+
+service TransactionService {
+  rpc ListTransaction(CheckTransactions) returns (ListTransactions) {}
+  rpc CreateTransaction(Transaction) returns (TransactionResponse) {}
+  rpc Balance(CheckTransactions) returns (BalanceResponse);
+}
+
+message CheckTransactions {
+    string id = 1;
+}
+
+message ListTransactions {
+    repeated TransactionResponse transactions = 1;
+}
+
+message BalanceResponse {
+    float balance = 1;
+}
+
+message Transaction {
+    string account = 1;
+    float amount = 2;
+    string type = 3;
+}
+
+message TransactionResponse {
+    string id = 1;
+    string account = 2;
+    float amount = 3;
+    string type = 4;
+    string createdAt = 5;
+    string updatedAt = 6;
+}
