@@ -1,0 +1,16 @@
+query {
+  items(id: "6d3df3f3-8d3c-4b40-bf0c-bf4e0b194eed"){
+    balance
+  }
+}
+
+mutation{
+  createTransaction(transactionData:{
+    account:"de8aeebd-5ad3-4310-8a90-b7b42d138b56",
+    amount: 10,
+    type:"deposit"
+  }){
+    id,
+    amount
+  }
+}
