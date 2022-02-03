@@ -1,10 +1,20 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TransactionModule } from 'src/transaction/transaction.module';
+import { MikroORMConfig } from 'src/config/database';
+
+import { TransactionModule } from '../transaction/transaction.module';
 import { GraphqlResolver } from './graphql.resolver';
 
 @Module({
   imports: [
+    ConfigModule,
+    MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => new MikroORMConfig(config).createMikroOrmOptions(),
+      inject: [ConfigService],
+    }),
     TransactionModule,
     GraphQLModule.forRoot({
       debug: true,
@@ -12,7 +22,6 @@ import { GraphqlResolver } from './graphql.resolver';
       autoSchemaFile: 'schema.gql',
     }),
   ],
-  // controllers: [GraphqlController],
   providers:[GraphqlResolver]
 })
 export class GraphqlModule { }
